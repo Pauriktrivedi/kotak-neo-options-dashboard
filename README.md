@@ -1,43 +1,66 @@
-# Live NSE Market Dashboard
+# Kotak Neo Real-Time Options Trading Dashboard
 
-A real-time Python dashboard that fetches market data directly from the NSE website and displays it dynamically using Streamlit and Plotly.
+A professional-grade real-time options trading dashboard built with Python and Streamlit, streaming live data from the Kotak Neo API.
 
-## Features
-- **Live NSE Data**: Fetches data for various indices (NIFTY 50, NIFTY BANK, etc.) directly from NSE API.
-- **In-Memory Storage**: Uses pandas DataFrames to maintain rolling historical data during runtime (no Excel or file storage).
-- **Auto-Refresh**: Dashboard updates automatically at a configurable interval (5–60 seconds).
-- **Interactive Visualizations**: Includes live data tables with color-coded changes and trend charts for price and percentage change.
-- **Robust Fetching**: Handles NSE anti-bot protection using proper headers, session management, and automatic retries with Brotli decoding.
+## 🚀 Features
+- **Live Data Streaming**: Real-time LTP, OI, and Volume updates via WebSocket.
+- **Advanced Analytics**:
+  - Live Put-Call Ratio (PCR).
+  - Max Pain calculation.
+  - Support & Resistance detection based on OI.
+  - OI Heatmaps and trend analysis.
+- **Option Chain**: Professional layout with ATM highlighting.
+- **Demo Mode**: Full functionality with simulated data for testing without API credentials.
+- **Modular Architecture**: Clean, scalable code structure.
 
-## Project Structure
-- `dashboard.py`: The Streamlit application containing the UI and refresh logic.
-- `fetcher.py`: Modular component for handling requests to NSE and session management.
-- `utils.py`: Utility functions for data cleaning, metric calculation, and historical data management.
-- `requirements.txt`: List of required Python libraries.
+## 📂 Project Structure
+- `app.py`: Main Streamlit dashboard.
+- `kotak_api.py`: Kotak Neo API wrapper & Mock client.
+- `option_chain.py`: Option chain data management.
+- `analytics.py`: Financial calculations (PCR, Max Pain, Greeks).
+- `ui_components.py`: Reusable Streamlit UI elements.
+- `config.py`: Configuration and environment settings.
 
-## How it Works
-### Data Fetching
-The `NSEFetcher` class initializes a `requests.Session` with browser-like headers. It first visits the NSE home page to obtain necessary cookies and then makes requests to the JSON API endpoints used by the NSE website. It specifically handles `401` and `403` status codes by re-initializing the session. Data is decoded using `brotli` to handle the compression used by NSE.
+## 🛠 Setup Instructions
 
-### Dashboard Refresh
-The dashboard uses Streamlit's `st.rerun()` mechanism combined with `time.sleep()` to create a live update loop. Historical data is persisted across reruns using `st.session_state`, allowing the trend charts to populate as long as the application is running.
+### 1. Prerequisites
+- Python 3.10+
+- Kotak Neo API Credentials (API Key, Secret, UCC, etc.)
 
-## Setup and Running Locally
-
-1. **Install Dependencies**:
+### 2. Installation
+1. Clone the repository or download the files.
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
-2. **Run the Dashboard**:
+3. Install Kotak Neo SDK (if not on PyPI):
    ```bash
-   streamlit run dashboard.py
+   pip install "git+https://github.com/Kotak-Neo/Kotak-neo-api-v2.git@v2.0.1#egg=neo_api_client"
    ```
 
-3. **Access the App**:
-   Open your browser and navigate to `http://localhost:8501`.
+### 3. Configuration
+Create a `.env` file or update `config.py` with your credentials:
+```env
+KOTAK_API_KEY=your_api_key
+KOTAK_API_SECRET=your_api_secret
+KOTAK_MOBILE_NUMBER=your_mobile
+KOTAK_PASSWORD=your_password
+KOTAK_UCC=your_ucc
+DEMO_MODE=True
+```
 
-## Assumptions and Limitations
-- **Market Hours**: Data is live during NSE market hours (9:15 AM to 3:30 PM IST, Monday-Friday). Outside these hours, the dashboard will show the last available snapshot.
-- **NSE Throttling**: NSE may occasionally block or throttle requests if the refresh interval is too aggressive or if many requests originate from the same IP. The fetcher includes basic retry logic, but persistent blocks may require manual session reset (or waiting).
-- **Memory Usage**: Historical data is kept in memory. While it is limited to a rolling window (default 100 points), keeping the app running for extremely long periods with many symbols may increase memory consumption.
+### 4. Running the Dashboard
+```bash
+streamlit run app.py
+```
+
+## 🔐 Authentication
+The dashboard supports login via the sidebar. If you don't have Kotak credentials, toggle **Demo Mode** to see the dashboard in action with simulated live data.
+
+## 📊 Performance
+- WebSocket streaming for low latency.
+- Optimized UI updates every 1 second.
+- Efficient memory handling for long-running sessions.
+
+## 🛡 Disclaimer
+This dashboard is for educational and informational purposes only. Trading in options involves significant risk.

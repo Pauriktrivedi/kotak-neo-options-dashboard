@@ -1,0 +1,24 @@
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.0.2:8501
+  External URL: http://35.224.132.190:8501
+
+2026-02-20 07:34:03.446 Uncaught app execution
+Traceback (most recent call last):
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/exec_code.py", line 129, in exec_func_with_error_handling
+    result = func()
+             ^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 689, in code_to_exec
+    exec(code, module.__dict__)  # noqa: S102
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/kotak_dashboard/app.py", line 5, in <module>
+    from option_chain import OptionChainManager
+  File "/app/kotak_dashboard/option_chain.py", line 70
+    except Exception:
+SyntaxError: expected 'except' or 'finally' block
+  Stopping...
